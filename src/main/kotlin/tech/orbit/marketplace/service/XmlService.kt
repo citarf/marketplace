@@ -3,48 +3,55 @@ package tech.orbit.marketplace.service
 import org.springframework.stereotype.Service
 import org.w3c.dom.Document
 import org.w3c.dom.Element
-import org.w3c.dom.Node
-import org.w3c.dom.NodeList
+import java.io.StringWriter
 import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 
 @Service
 class XmlService {
 
-    val plugins: List<Plugin> = parse("/Users/pam/IdeaProjects/marketplace/src/main/resources/updatePlugins.xml")
+    fun generateXml(plugins: Plugins): Document {
+        val docFactory = DocumentBuilderFactory.newInstance()
+        val docBuilder = docFactory.newDocumentBuilder()
 
-    private fun parse(xmlFile: String): List<Plugin> {
-        val xmlDoc: Document = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder()
-                .parse(xmlFile)
-        xmlDoc.documentElement.normalize()
+        // Root element <plugins>
+        val doc: Document = docBuilder.newDocument()
+        val rootElement: Element = doc.createElement("plugins")
+        doc.appendChild(rootElement)
 
-        val pluginNodes: NodeList = xmlDoc.getElementsByTagName("plugin")
+        plugins.plugins.forEach { plugin ->
+            val pluginElement = doc.createElement("plugin")
+            rootElement.appendChild(pluginElement)
 
-        val plugins: MutableList<Plugin> = mutableListOf()
+            // Set attributes
+            pluginElement.setAttribute("id", plugin.id)
+            pluginElement.setAttribute("url", plugin.url)
+            pluginElement.setAttribute("version", plugin.version)
 
-        for (i in 0 until pluginNodes.length) {
-            val pluginNode: Node = pluginNodes.item(i)
-            if (pluginNode.nodeType == Node.ELEMENT_NODE) {
-
-                val pluginElement = pluginNode as Element
-
-                val id = pluginElement.getAttribute("id")
-                val url = pluginElement.getAttribute("url")
-                val version = pluginElement.getAttribute("version")
-
-                val ideaVersionElement = pluginElement.getElementsByTagName("idea-version").item(0) as Element
-                val sinceBuild = ideaVersionElement.getAttribute("since-build")
-                val untilBuild = ideaVersionElement.getAttribute("until-build")
-
-                plugins.add(
-                        Plugin(id, url, version, sinceBuild, untilBuild)
-                )
-            }
+            // Idea version element
+            val ideaVersionElement = doc.createElement("idea-version")
+            ideaVersionElement.setAttribute("since-build", plugin.sinceBuild)
+            ideaVersionElement.setAttribute("until-build", plugin.untilBuild)
+            pluginElement.appendChild(ideaVersionElement)
         }
 
-        return plugins.toList()
+        return doc
+    }
+
+    fun documentToString(doc: Document): String {
+        val transformer = TransformerFactory.newInstance().newTransformer()
+        val source = DOMSource(doc)
+        val result = StreamResult(StringWriter())
+
+        transformer.transform(source, result)
+
+        return result.writer.toString()
     }
 }
+
+data class Plugins(val plugins: List<Plugin>)
 
 data class Plugin(
         val id: String,

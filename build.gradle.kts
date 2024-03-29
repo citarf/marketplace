@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "tech.orbit"
-version = "0.0.1-SNAPSHOT"
+version = "SNAPSHOT-24w13a"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -26,11 +26,12 @@ repositories {
 }
 
 dependencies {
-    // implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("com.mysql:mysql-connector-j:8.3.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
