@@ -3,6 +3,7 @@ package tech.orbit.marketplace.service
 import org.springframework.stereotype.Service
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import tech.orbit.marketplace.entity.Plugins
 import java.io.StringWriter
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.TransformerFactory
@@ -26,7 +27,7 @@ class XmlService {
             rootElement.appendChild(pluginElement)
 
             // Set attributes
-            pluginElement.setAttribute("id", plugin.id)
+            pluginElement.setAttribute("id", plugin.fullyQualifiedId)
             pluginElement.setAttribute("url", plugin.url)
             pluginElement.setAttribute("version", plugin.version)
 
@@ -50,13 +51,3 @@ class XmlService {
         return result.writer.toString()
     }
 }
-
-data class Plugins(val plugins: List<Plugin>)
-
-data class Plugin(
-        val id: String,
-        val url: String,
-        val version: String,
-        val sinceBuild: String,
-        val untilBuild: String
-)

@@ -2,25 +2,38 @@ package tech.orbit.marketplace.controller
 
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpHeaders
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RestController
-import tech.orbit.marketplace.service.Plugin
-import tech.orbit.marketplace.service.Plugins
+import org.springframework.web.bind.annotation.*
+import tech.orbit.marketplace.dto.CreatePluginRequest
+import tech.orbit.marketplace.dto.toEntity
+import tech.orbit.marketplace.entity.Plugin
+import tech.orbit.marketplace.entity.Plugins
+import tech.orbit.marketplace.repository.PluginRepository
 import tech.orbit.marketplace.service.XmlService
 
 @RestController
+@RequestMapping("/plugins")
 class PluginController(
-    val xmlService: XmlService
+    val xmlService: XmlService,
+    val pluginRepository: PluginRepository
 ) {
+
+    @GetMapping
+    fun getPlugins(): List<Plugin> {
+
+        return pluginRepository.findAll().toList()
+    }
+
+    @PostMapping
+    fun savePlugin(@RequestBody plugin: CreatePluginRequest): Plugin {
+
+        val save: Plugin = pluginRepository.save(plugin.toEntity())
+        return save
+    }
 
     @GetMapping("/downloadXml")
     fun downloadXml(response: HttpServletResponse) {
 
-        // Example data
-        val plugins = Plugins(listOf(
-            Plugin("fully.qualified.id.of.this.plugin", "https://mycompany.example.com/my_repo/my_plugin.jar", "major.minor.update", "181.3", "191.*"),
-            Plugin("id.of.different.plugin", "https://othercompany.example.com/other_repo/other_plugin.jar", "major.minor","181.3", "191.*")
-        ))
+        val plugins = Plugins(pluginRepository.findAll().toList())
 
         val doc = xmlService.generateXml(plugins)
         val xmlString = xmlService.documentToString(doc)
