@@ -15,18 +15,24 @@ const props = defineProps<{
 </script>
 
 <template>
-  <UContainer class="p-4 size-full">
-    <UCard>
+  <UContainer class="p-4 size-full min-w-40">
+    <UCard :ui="{divide: ''}">
       <template #header>
-        <p class="font-bold text-xl">{{ plugin.name }}</p>
+        <div class="flex flex-row font-sans">
+          <div class="basis-1/6"><img src="https://placehold.co/49" /></div>
+          <div class="basis-5/6">
+            <p class="font-bold text-xl pl-4">{{ plugin.name }}</p>
+            <p class="font-extralight text-sm text-gray-400 pl-4">{{plugin.vendor}}</p>
+          </div>
+        </div>
       </template>
       <ul>
-        <li>Version: {{ plugin.version }}</li>
-        <li>Since build: {{ plugin.sinceBuild }}</li>
-        <li>Until build: {{ plugin.untilBuild }}</li>
+        <li><p class="font-thin">Version: {{ plugin.version }}</p></li>
+        <li><p class="font-thin">Since build: {{ plugin.sinceBuild }}</p></li>
+        <li><p class="font-thin">Until build: {{ plugin.untilBuild }}</p></li>
       </ul>
       <template #footer>
-        <p>{{ plugin.vendor }}</p>
+        <NuxtLink class="font-thin text-sm text-gray-400" :to="plugin.url">Download</NuxtLink>
       </template>
     </UCard>
   </UContainer>
