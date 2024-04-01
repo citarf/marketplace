@@ -1,4 +1,4 @@
-package tech.orbit.marketplace.entity
+package tech.orbit.marketplace.plugins
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -11,7 +11,8 @@ class Plugin(
     @Id
     @GeneratedValue(strategy=GenerationType.UUID)
     var id: String? = null,
-
+    var name: String? = null,
+    var vendor: String? = null,
     var fullyQualifiedId: String? = null,
     var url: String? = null,
     var version: String? = null,

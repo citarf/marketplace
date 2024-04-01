@@ -3,7 +3,7 @@ package tech.orbit.marketplace.service
 import org.springframework.stereotype.Service
 import org.w3c.dom.Document
 import org.w3c.dom.Element
-import tech.orbit.marketplace.entity.Plugins
+import tech.orbit.marketplace.plugins.Plugins
 import java.io.StringWriter
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.TransformerFactory

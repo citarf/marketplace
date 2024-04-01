@@ -1,9 +1,9 @@
-package tech.orbit.marketplace.dto
-
-import tech.orbit.marketplace.entity.Plugin
+package tech.orbit.marketplace.plugins
 
 data class CreatePluginRequest(
     val fullyQualifiedId: String,
+    val name: String,
+    val vendor: String,
     val url: String,
     val version: String,
     val sinceBuild: String,
@@ -14,6 +14,8 @@ fun CreatePluginRequest.toEntity(): Plugin {
 
     return Plugin(
         id= null,
+        name,
+        vendor,
         fullyQualifiedId,
         url,
         version,

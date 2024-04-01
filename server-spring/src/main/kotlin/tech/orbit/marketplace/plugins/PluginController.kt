@@ -1,13 +1,8 @@
-package tech.orbit.marketplace.controller
+package tech.orbit.marketplace.plugins
 
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.web.bind.annotation.*
-import tech.orbit.marketplace.dto.CreatePluginRequest
-import tech.orbit.marketplace.dto.toEntity
-import tech.orbit.marketplace.entity.Plugin
-import tech.orbit.marketplace.entity.Plugins
-import tech.orbit.marketplace.repository.PluginRepository
 import tech.orbit.marketplace.service.XmlService
 
 @RestController

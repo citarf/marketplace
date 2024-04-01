@@ -1,7 +1,6 @@
-package tech.orbit.marketplace.repository
+package tech.orbit.marketplace.plugins
 
 import org.springframework.data.repository.CrudRepository
-import tech.orbit.marketplace.entity.Plugin
 
 interface PluginRepository : CrudRepository<Plugin, String> {
 }
